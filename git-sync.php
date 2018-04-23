@@ -107,10 +107,77 @@ class GitSyncPlugin extends Plugin
         $this->git = $this->controller->git;
     }
 
+    /**
+     * Execute command in background, cross-platform
+     * @param $cmd string Command to execute
+     * @return int|string Command result
+     */
+    public static function execInBackground($cmd)
+    {
+        if (false !== stripos(PHP_OS, 'win')) {
+            // Windows platform
+            return pclose(popen('start /B ' . $cmd, 'r'));
+        }
+        // Unix-like platform
+        return exec($cmd . ' > /dev/null &');
+    }
+
+    /**
+     * Finds the root path of the running Grav instance
+     * @param array $config Git sync plugin config
+     * @return string Grav root path
+     */
+    private static function findRootPath($config = [])
+    {
+        // Find /bin path
+        if (!(\array_key_exists('bin_path', $config)
+              && $binPath = \realpath($config['bin_path']))) {
+            // /bin path has not (or incorrectly) been set in configuration
+            if (!($binPath = \realpath(\dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'bin'))) {
+                // /bin path could not be found automatically
+                throw new \RuntimeException('Git synchronize error: Bin path is not configured properly.');
+            }
+        }
+
+        // Find /plugin executable
+        if (!(\file_exists($pluginPath = $binPath . DIRECTORY_SEPARATOR . 'plugin')
+              && \is_readable($pluginPath))) {
+            // "plugin" not found or not executable
+            throw new \RuntimeException('"plugin" executable not found in ' . $pluginPath);
+        }
+
+        // Return /bin parent directory (root path)
+        return \dirname($binPath);
+    }
+
+    /**
+     * Executes "sync" CLI command in background
+     * @param array $config Git sync plugin configuration
+     * @return bool Returns true when the command has been executed
+     * @throws \Exception
+     */
+    private function synchronizeInBackground($config = [])
+    {
+        $rootPath = static::findRootPath($config);
+        // Execute CLI synchronize command in background
+        $cmd = 'cd ' . $rootPath . ' && php bin' . DIRECTORY_SEPARATOR . 'plugin git-sync sync';
+        static::execInBackground($cmd);
+
+        return true;
+    }
+
     public function synchronize()
     {
         if (!Helper::isGitInstalled() || !Helper::isGitInitialized()) {
             return true;
+        }
+
+        // Synchronize in background ?
+        if (($pluginConfig = $this->config->get('plugins.' . $this->name)) &&
+            \array_key_exists('execute_in_background', $pluginConfig)
+            && \array_key_exists('enabled', $pluginConfig['execute_in_background'])
+            && true === $pluginConfig['execute_in_background']['enabled']) {
+            return $this->synchronizeInBackground($pluginConfig['execute_in_background']);
         }
 
         $this->grav->fireEvent('onGitSyncBeforeSynchronize');
