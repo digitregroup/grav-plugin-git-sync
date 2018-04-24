@@ -123,11 +123,11 @@ class GitSyncPlugin extends Plugin
     }
 
     /**
-     * Finds the root path of the running Grav instance
+     * Finds the /bin path of the running Grav instance
      * @param array $config Git sync plugin config
-     * @return string Grav root path
+     * @return string Grav /bin path
      */
-    private static function findRootPath($config = [])
+    private static function findBinPath($config = [])
     {
         // Find /bin path
         if (!(\array_key_exists('bin_path', $config)
@@ -146,8 +146,8 @@ class GitSyncPlugin extends Plugin
             throw new \RuntimeException('"plugin" executable not found in ' . $pluginPath);
         }
 
-        // Return /bin parent directory (root path)
-        return \dirname($binPath);
+        // Return /bin directory
+        return $binPath;
     }
 
     /**
@@ -158,7 +158,7 @@ class GitSyncPlugin extends Plugin
      */
     private function synchronizeInBackground($config = [])
     {
-        $rootPath = static::findRootPath($config);
+        $rootPath = \dirname(static::findBinPath($config));
         // Execute CLI synchronize command in background
         $cmd = 'cd ' . $rootPath . ' && php bin' . DIRECTORY_SEPARATOR . 'plugin git-sync sync';
         static::execInBackground($cmd);
