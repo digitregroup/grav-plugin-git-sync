@@ -114,6 +114,41 @@ form:
           0: PLUGIN_ADMIN.NO
       validate:
           type: bool
+    sync_on_all_admin_save_events:
+      type: toggle
+      default: 0
+      label: Sync on all admin save events
+      help: If No, synchronization will be fired only on page/folder/media save events.
+      highlight: 0
+      options:
+          1: PLUGIN_ADMIN.YES
+          0: PLUGIN_ADMIN.NO
+      validate:
+          type: bool
+
+    Background:
+      type: section
+      title: Background execution
+      underline: true
+    execute_in_background.enabled:
+      type: toggle
+      label: Execute in background
+      help: Executes the synchronization process in the background, improving the perceived performance of the Saving process
+      highlight: 1
+      default: 0
+      options:
+        1: Yes
+        0: No
+      validate:
+        type: bool
+
+    execute_in_background.root_path:
+      type: text
+      label: Absolute path to Grav's root folder
+      description: >
+        Only fill this field if either /bin or /user is not installed in Grav's root folder.<br/>
+        You may need to hit the Save button twice the first time you set this path.
+
     Actions:
       type: section
       title: Actions
