@@ -147,7 +147,7 @@ form:
       label: Absolute path to Grav's root folder
       description: >
         Only fill this field if either /bin or /user is not installed in Grav's root folder.<br/>
-        You may need to hit the Save button twice the first time you set this path.
+        If you enabled the git sync trigger on all admin save event, you may need to hit the Save button twice the first time you set this path.
 
     Actions:
       type: section
