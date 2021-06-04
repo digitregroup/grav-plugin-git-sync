@@ -1,4 +1,4 @@
-![](images/gitsync-logo.png)
+![](images/gitsyncbis-logo.png)
 
 **Git Sync** is a Plugin for [Grav CMS](http://github.com/getgrav/grav) that allows to seamlessly synchronize a Git repository with your Grav site, and vice-versa. 
 
@@ -15,7 +15,7 @@ Thanks to this powerful bi-directional flow, Git Sync can now turn your site int
 ## Installation using the GPM (Grav Package Manager)
 
 ```
-bin/gpm install git-sync
+bin/gpm install git-sync-bis
 ```
 
 ## Features
@@ -30,9 +30,9 @@ bin/gpm install git-sync
 * Automatically handles simple merges behind the scenes
 * Easy one-click button to reset your local changes and restores it to the actual state of the git repository
 * Easy one-click button to manually synchronize
-* Customize the Committer Name, choose between Git User, GitSync Commiter Name, Grav User Name and Grav user Fullname 
-* With the built-in Form Process action `gitsync`, you can trigger the synchronization anytime someone submits a post.
-* Any 3rd party plugin can integrate with Git Sync and trigger the synchronization through the `gitsync` event.
+* Customize the Committer Name, choose between Git User, GitSyncBis Commiter Name, Grav User Name and Grav user Fullname 
+* With the built-in Form Process action `gitsyncbis`, you can trigger the synchronization anytime someone submits a post.
+* Any 3rd party plugin can integrate with Git Sync and trigger the synchronization through the `gitsyncbis` event.
 * Built-in CLI command to automate synchronizations.
 
 # Command Line Interface
@@ -42,7 +42,7 @@ Git Sync comes with a CLI that allows to run synchronizations right within your 
 To execute the command simply run:
 
 ```bash
-bin/plugin git-sync sync
+bin/plugin git-sync-bis sync
 ```
 
 # Requirements

@@ -2,7 +2,7 @@
 namespace Grav\Plugin\Console;
 
 use Grav\Console\ConsoleCommand;
-use Grav\Plugin\GitSync\GitSync;
+use Grav\Plugin\GitSyncBis\GitSyncBis;
 
 /**
  * Class LogCommand
@@ -24,7 +24,7 @@ class SyncCommand extends ConsoleCommand
     {
         require_once __DIR__ . '/../vendor/autoload.php';
 
-        $plugin = new GitSync();
+        $plugin = new GitSyncBis();
         $repository = $plugin->getConfig('repository', false);
 
         $this->output->writeln('');

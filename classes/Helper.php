@@ -1,6 +1,6 @@
 <?php
 
-namespace Grav\Plugin\GitSync;
+namespace Grav\Plugin\GitSyncBis;
 
 use Defuse\Crypto\Crypto;
 use Grav\Common\Grav;
@@ -43,7 +43,7 @@ class Helper {
     {
         $grav = Grav::instance()['config'];
 
-        return $override ?: $grav->get('plugins.git-sync.git.bin', 'git');
+        return $override ?: $grav->get('plugins.git-sync-bis.git.bin', 'git');
     }
 
     public static function prepareRepository($user, $password, $repository)
@@ -53,7 +53,7 @@ class Helper {
     }
 
     public static function testRepository($user, $password, $repository) {
-        $git = new GitSync();
+        $git = new GitSyncBis();
         $repository = self::prepareRepository($user, $password, $repository);
 
         try {
@@ -65,12 +65,12 @@ class Helper {
 
     public static function encrypt($password)
     {
-        return 'gitsync-' . Crypto::encryptWithPassword($password, self::$hash);
+        return 'gitsyncbis-' . Crypto::encryptWithPassword($password, self::$hash);
     }
 
     public static function decrypt($enc_password)
     {
-        if (substr($enc_password, 0, 8) === 'gitsync-') {
+        if (substr($enc_password, 0, 8) === 'gitsyncbis-') {
             $enc_password = substr($enc_password, 8);
             return Crypto::decryptWithPassword($enc_password, self::$hash);
         } else {

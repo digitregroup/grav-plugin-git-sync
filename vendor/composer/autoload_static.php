@@ -13,12 +13,12 @@ class ComposerStaticInitc058e1b5c686df0909ec1cc39bb5d854
     public static $prefixLengthsPsr4 = array (
         'G' => 
         array (
-            'Grav\\Plugin\\GitSync\\' => 20,
+            'Grav\\Plugin\\GitSyncBis\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Grav\\Plugin\\GitSync\\' => 
+        'Grav\\Plugin\\GitSyncBis\\' => 
         array (
             0 => __DIR__ . '/../..' . '/classes',
         ),

@@ -2,8 +2,8 @@
 namespace Grav\Plugin\Console;
 
 use Grav\Console\ConsoleCommand;
-use Grav\Plugin\GitSync\GitSync;
-use Grav\Plugin\GitSync\Helper;
+use Grav\Plugin\GitSyncBis\GitSyncBis;
+use Grav\Plugin\GitSyncBis\Helper;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -49,7 +49,7 @@ EOF
     {
         require_once __DIR__ . '/../vendor/autoload.php';
 
-        $plugin = new GitSync();
+        $plugin = new GitSyncBis();
         $this->output->writeln('');
 
 

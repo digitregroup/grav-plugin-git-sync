@@ -27,7 +27,7 @@ module.exports = {
     ],
     externals: {
         jquery: 'jQuery',
-        'git-sync': 'GitSync',
+        'git-sync-bis': 'GitSyncBis',
         'grav-config': 'GravAdmin'
     },
     module: {

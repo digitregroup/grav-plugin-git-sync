@@ -4,17 +4,17 @@ namespace Grav\Plugin;
 
 use Grav\Common\Data\Data;
 use Grav\Common\Plugin;
-use Grav\Plugin\GitSync\AdminController;
-use Grav\Plugin\GitSync\GitSync;
-use Grav\Plugin\GitSync\Helper;
+use Grav\Plugin\GitSyncBis\AdminController;
+use Grav\Plugin\GitSyncBis\GitSyncBis;
+use Grav\Plugin\GitSyncBis\Helper;
 use RocketTheme\Toolbox\Event\Event;
 
 /**
- * Class GitSyncPlugin
+ * Class GitSyncBisPlugin
  *
  * @package Grav\Plugin
  */
-class GitSyncPlugin extends Plugin
+class GitSyncBisPlugin extends Plugin
 {
     protected $controller;
     protected $git;
@@ -37,7 +37,7 @@ class GitSyncPlugin extends Plugin
     public function onPluginsInitialized()
     {
         require_once __DIR__ . '/vendor/autoload.php';
-        $this->enable(['gitsync' => ['synchronize', 0]]);
+        $this->enable(['gitsyncbis' => ['synchronize', 0]]);
         $this->init();
 
         if ($this->isAdmin()) {
@@ -65,12 +65,12 @@ class GitSyncPlugin extends Plugin
 
                     echo json_encode([
                         'status'  => 'success',
-                        'message' => 'GitSync completed the synchronization'
+                        'message' => 'GitSyncBis completed the synchronization'
                     ]);
                 } catch (\Exception $e) {
                     echo json_encode([
                         'status'  => 'error',
-                        'message' => 'GitSync failed to synchronize'
+                        'message' => 'GitSyncBis failed to synchronize'
                     ]);
                 }
                 exit;
@@ -83,15 +83,15 @@ class GitSyncPlugin extends Plugin
         $base = rtrim($this->grav['base_url'], '/') . '/' . trim($this->grav['admin']->base, '/');
         $options = [
             //            'route' => $this->admin_route . '/plugins/tntsearch',
-            'hint' => 'Synchronize GitSync',
-            'class' => 'gitsync-sync',
+            'hint' => 'Synchronize GitSyncBis',
+            'class' => 'gitsyncbis-sync',
             'data'  => [
-                'gitsync-useraction' => 'sync',
-                'gitsync-uri' => $base . '/plugins/git-sync'
+                'gitsyncbis-useraction' => 'sync',
+                'gitsyncbis-uri' => $base . '/plugins/git-sync-bis'
             ],
-            'icon' => 'fa-' . $this->grav['plugins']->get('git-sync')->blueprints()->get('icon')
+            'icon' => 'fa-' . $this->grav['plugins']->get('git-sync-bis')->blueprints()->get('icon')
         ];
-        $this->grav['twig']->plugins_quick_tray['GitSync'] = $options;
+        $this->grav['twig']->plugins_quick_tray['GitSyncBis'] = $options;
     }
 
     public function init()
@@ -101,7 +101,7 @@ class GitSyncPlugin extends Plugin
             $this->controller = new AdminController($this);
         } else {
             $this->controller      = new \stdClass;
-            $this->controller->git = new GitSync($this);
+            $this->controller->git = new GitSyncBis($this);
         }
 
         $this->git = $this->controller->git;
@@ -173,7 +173,7 @@ class GitSyncPlugin extends Plugin
             throw new \RuntimeException(sprintf('/bin/plugin not found in %s, set path manually in Git sync plugin config', $rootPath));
         }
         // Execute CLI synchronize command in background
-        $cmd = 'cd ' . $rootPath . ' && php bin' . DIRECTORY_SEPARATOR . 'plugin git-sync sync';
+        $cmd = 'cd ' . $rootPath . ' && php bin' . DIRECTORY_SEPARATOR . 'plugin git-sync-bis sync';
         static::execInBackground($cmd);
 
         return true;
@@ -193,7 +193,7 @@ class GitSyncPlugin extends Plugin
             return $this->synchronizeInBackground($pluginConfig['execute_in_background']);
         }
 
-        $this->grav->fireEvent('onGitSyncBeforeSynchronize');
+        $this->grav->fireEvent('onGitSyncBisBeforeSynchronize');
 
         if (!$this->git->isWorkingCopyClean()) {
             // commit any change
@@ -203,7 +203,7 @@ class GitSyncPlugin extends Plugin
         // synchronize with remote
         $this->git->sync();
 
-        $this->grav->fireEvent('onGitSyncAfterSynchronize');
+        $this->grav->fireEvent('onGitSyncBisAfterSynchronize');
 
         return true;
     }
@@ -214,11 +214,11 @@ class GitSyncPlugin extends Plugin
             return true;
         }
 
-        $this->grav->fireEvent('onGitSyncBeforeReset');
+        $this->grav->fireEvent('onGitSyncBisBeforeReset');
 
         $this->git->reset();
 
-        $this->grav->fireEvent('onGitSyncAfterReset');
+        $this->grav->fireEvent('onGitSyncBisAfterReset');
 
         return true;
     }
@@ -238,7 +238,7 @@ class GitSyncPlugin extends Plugin
     {
         // workaround for admin plugin issue that doesn't properly unsubscribe
         // events upon plugin uninstall
-        if (!class_exists('Grav\Plugin\GitSync\Helper')) {
+        if (!class_exists('Grav\Plugin\GitSyncBis\Helper')) {
             return false;
         }
 
@@ -249,13 +249,13 @@ class GitSyncPlugin extends Plugin
 
         $this->grav['twig']->twig_vars['git_sync'] = $settings;
 
-        if ($this->grav['uri']->path() === '/admin/plugins/git-sync') {
-            $this->grav['assets']->addCss('plugin://git-sync/css-compiled/git-sync.css');
+        if ($this->grav['uri']->path() === '/admin/plugins/git-sync-bis') {
+            $this->grav['assets']->addCss('plugin://git-sync-bis/css-compiled/git-sync-bis.css');
         } else {
-            $this->grav['assets']->addInlineJs('var GitSync = ' . json_encode($settings) . ';');
+            $this->grav['assets']->addInlineJs('var GitSyncBis = ' . json_encode($settings) . ';');
         }
 
-        $this->grav['assets']->addJs('plugin://git-sync/js/app.js', ['loading' => 'defer', 'priority' => 0]);
+        $this->grav['assets']->addJs('plugin://git-sync-bis/js/app.js', ['loading' => 'defer', 'priority' => 0]);
         
         return true;
     }
@@ -287,7 +287,7 @@ class GitSyncPlugin extends Plugin
                 if (!$password) { // set to !()
                     $current_password = $this->controller->git->getPassword();
                     // password exists but was never encrypted
-                    if (substr($current_password, 0, 8) !== 'gitsync-') {
+                    if (substr($current_password, 0, 8) !== 'gitsyncbis-') {
                         $current_password = Helper::encrypt($current_password);
                     }
                 } else {
@@ -341,7 +341,7 @@ class GitSyncPlugin extends Plugin
     {
         $action = $event['action'];
 
-        if ($action == 'gitsync') {
+        if ($action == 'gitsyncbis') {
             $this->synchronize();
         }
     }

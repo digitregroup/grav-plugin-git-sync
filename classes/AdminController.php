@@ -1,6 +1,6 @@
 <?php
 
-namespace Grav\Plugin\GitSync;
+namespace Grav\Plugin\GitSyncBis;
 
 use Grav\Common\Grav;
 use Grav\Common\Plugin;
@@ -32,7 +32,7 @@ class AdminController extends AdminBaseController
         if (Utils::isAdminPlugin()) {
             $routeDetails = $this->grav['admin']->getRouteDetails();
             $target = array_pop($routeDetails);
-            $this->git = new GitSync($plugin);
+            $this->git = new GitSyncBis($plugin);
 
             // return null if this is not running
             if ($target != $plugin->name)  {
@@ -80,7 +80,7 @@ class AdminController extends AdminBaseController
             $this->plugin->synchronize();
             echo json_encode([
                 'status'  => "success",
-                'message' => 'GitSync has successfully synchronized with the repository.'
+                'message' => 'GitSyncBis has successfully synchronized with the repository.'
             ]);
         } catch (\Exception $e) {
             $invalid = str_replace($this->git->getConfig('password', null), '{password}', $e->getMessage());
@@ -99,7 +99,7 @@ class AdminController extends AdminBaseController
             $this->plugin->reset();
             echo json_encode([
                 'status'  => "success",
-                'message' => 'GitSync has successfully reset your local changes and synchronized with the repository.'
+                'message' => 'GitSyncBis has successfully reset your local changes and synchronized with the repository.'
             ]);
         } catch (\Exception $e) {
             $invalid = str_replace($this->git->getConfig('password', null), '{password}', $e->getMessage());

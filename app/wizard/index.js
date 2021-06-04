@@ -1,4 +1,4 @@
-import Settings from 'git-sync';
+import Settings from 'git-sync-bis';
 import request from 'admin/utils/request';
 import toastr from 'admin/utils/toastr';
 import { config } from 'grav-config';
@@ -13,9 +13,9 @@ const TEMPLATES = {
 
 const openWizard = () => {
     const modal = WIZARD.remodal({ closeOnConfirm: false });
-    const previous = WIZARD.find('[data-gitsync-action="previous"]');
-    const next = WIZARD.find('[data-gitsync-action="next"]');
-    const save = WIZARD.find('[data-gitsync-action="save"]');
+    const previous = WIZARD.find('[data-gitsyncbis-action="previous"]');
+    const next = WIZARD.find('[data-gitsyncbis-action="next"]');
+    const save = WIZARD.find('[data-gitsyncbis-action="save"]');
 
     STEP = 0;
 
@@ -26,7 +26,7 @@ const openWizard = () => {
     previous.addClass('hidden');
     save.addClass('hidden');
 
-    $('[name="gitsync[repository]"]').trigger('change');
+    $('[name="gitsyncbis[repository]"]').trigger('change');
 
     modal.open();
 };
@@ -39,10 +39,10 @@ $(document).on('closed', WIZARD, function(e) {
     STEP = 0;
 });
 
-$(document).on('click', '[data-gitsync-useraction]', (event) => {
+$(document).on('click', '[data-gitsyncbis-useraction]', (event) => {
     event.preventDefault();
-    const target = $(event.target).closest('[data-gitsync-useraction]');
-    const action = target.data('gitsyncUseraction');
+    const target = $(event.target).closest('[data-gitsyncbis-useraction]');
+    const action = target.data('gitsyncbisUseraction');
     const URI = `${config.current_url}.json`;
 
     switch (action) {
@@ -50,7 +50,7 @@ $(document).on('click', '[data-gitsync-useraction]', (event) => {
             openWizard();
             break;
         case 'sync':
-            const relativeURI = target.data('gitsync-uri');
+            const relativeURI = target.data('gitsyncbis-uri');
             target.find('i').removeClass('fa-cloud fa-git').addClass('fa-circle-o-notch fa-spin');
 
             request(relativeURI || URI, {
@@ -65,7 +65,7 @@ $(document).on('click', '[data-gitsync-useraction]', (event) => {
             modal.open();
 
             if (!RESET_LOCAL.data('_reset_event_set_')) {
-                RESET_LOCAL.find('[data-gitsync-action="reset-local"]').one('click', () => {
+                RESET_LOCAL.find('[data-gitsyncbis-action="reset-local"]').one('click', () => {
                     modal.close();
                     RESET_LOCAL.data('_reset_event_set_', true);
                     target.find('i').removeClass('fa-history').addClass('fa-circle-o-notch fa-spin');
@@ -82,17 +82,17 @@ $(document).on('click', '[data-gitsync-useraction]', (event) => {
     }
 });
 
-$(document).on('click', '[data-gitsync-action]', (event) => {
+$(document).on('click', '[data-gitsyncbis-action]', (event) => {
     event.preventDefault();
 
-    const target = $(event.target).closest('[data-gitsync-action]');
-    const previous = WIZARD.find('[data-gitsync-action="previous"]');
-    const next = WIZARD.find('[data-gitsync-action="next"]');
-    const save = WIZARD.find('[data-gitsync-action="save"]');
-    const action = target.data('gitsyncAction');
-    const user = $('[name="gitsync[repo_user]"]').val();
-    const password = $('[name="gitsync[repo_password]"]').val();
-    const repository = $('[name="gitsync[repo_url]"]').val();
+    const target = $(event.target).closest('[data-gitsyncbis-action]');
+    const previous = WIZARD.find('[data-gitsyncbis-action="previous"]');
+    const next = WIZARD.find('[data-gitsyncbis-action="next"]');
+    const save = WIZARD.find('[data-gitsyncbis-action="save"]');
+    const action = target.data('gitsyncbisAction');
+    const user = $('[name="gitsyncbis[repo_user]"]').val();
+    const password = $('[name="gitsyncbis[repo_password]"]').val();
+    const repository = $('[name="gitsyncbis[repo_url]"]').val();
 
     let error = [];
 
@@ -115,7 +115,7 @@ $(document).on('click', '[data-gitsync-action]', (event) => {
     }
 
     if (action === 'save') {
-        const folders = $('[name="gitsync[folders]"]:checked').map((i, item) => item.value);
+        const folders = $('[name="gitsyncbis[folders]"]:checked').map((i, item) => item.value);
         $('[name="data[repository]"]').val(repository);
         $('[name="data[user]"]').val(user);
         $('[name="data[password]"]').val(password);
@@ -167,13 +167,13 @@ $(document).on('click', '[data-gitsync-action]', (event) => {
     }
 });
 
-$(document).on('keyup', '[data-gitsync-uribase] [name="gitsync[webhook]"]', (event) => {
+$(document).on('keyup', '[data-gitsyncbis-uribase] [name="gitsyncbis[webhook]"]', (event) => {
     const target = $(event.currentTarget);
     const value = target.val();
-    $('.gitsync-webhook').text(value);
+    $('.gitsyncbis-webhook').text(value);
 });
 
-$(document).on('change', '[name="gitsync[repository]"]', (event) => {
+$(document).on('change', '[name="gitsyncbis[repository]"]', (event) => {
     const target = $(event.target);
     if (!target.is(':checked')) {
         return;
@@ -185,7 +185,7 @@ $(document).on('change', '[name="gitsync[repository]"]', (event) => {
         WIZARD.find(`.hidden-step-${service}`)[service === SERVICE ? 'removeClass' : 'addClass']('hidden');
         if (service === SERVICE) {
             WIZARD
-                .find('input[name="gitsync[repo_url]"][placeholder]')
+                .find('input[name="gitsyncbis[repo_url]"][placeholder]')
                 .attr('placeholder', TEMPLATES.REPO_URL.replace(/\{placeholder\}/, SERVICES[service]));
         }
     });

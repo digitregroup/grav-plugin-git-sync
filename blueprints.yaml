@@ -8,8 +8,8 @@ author:
   url: http://trilby.media
 homepage: http://trilby.media
 keywords: grav, plugin, git, sync, github, bitbucket, gitlab
-issues: https://github.com/trilbymedia/grav-plugin-git-sync/issues
-docs: https://github.com/trilbymedia/grav-plugin-git-sync
+issues: https://github.com/trilbymedia/grav-plugin-git-sync-bis/issues
+docs: https://github.com/trilbymedia/grav-plugin-git-sync-bis
 license: MIT
 
 form:
@@ -84,19 +84,19 @@ form:
       label: Commits Author
       options:
         gituser: Use Git User Name
-        gitsync: Use GitSync Committer Name
+        gitsyncbis: Use GitSyncBis Committer Name
         gravuser: Use Grav User Name
         gravfull: Use Grav User Full Name
     git.name:
       type: text
-      default: GitSync
+      default: GitSyncBis
       label: Committer Name
-      placeholder: GitSync
+      placeholder: GitSyncBis
     git.email:
       type: text
-      default: git-sync@trilby.media
+      default: git-sync-bis@trilby.media
       label: Committer Email
-      placeholder: git-sync@trilby.media
+      placeholder: git-sync-bis@trilby.media
     git.bin:
       type: text
       default: git

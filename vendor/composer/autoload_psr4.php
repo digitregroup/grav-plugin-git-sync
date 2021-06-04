@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Grav\\Plugin\\GitSync\\' => array($baseDir . '/classes'),
+    'Grav\\Plugin\\GitSyncBis\\' => array($baseDir . '/classes'),
 );

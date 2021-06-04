@@ -1,7 +1,7 @@
 {
-  "name": "trilby-grav-plugin-gitsync",
+  "name": "trilby-grav-plugin-gitsyncbis",
   "version": "1.0.0",
-  "description": "Trilby Git Sync Grav Plugin",
+  "description": "Trilby Git Sync Bis Grav Plugin",
   "main": "app/main.js",
   "scripts": {
     "watch": "webpack --watch --progress --colors --config webpack.conf.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/w00fz/trilby-grav-plugin-gitsync.git"
+    "url": "git+https://github.com/w00fz/trilby-grav-plugin-gitsyncbis.git"
   },
   "author": "Trilby Media, LLC",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/w00fz/trilby-grav-plugin-gitsync/issues"
+    "url": "https://github.com/w00fz/trilby-grav-plugin-gitsyncbis/issues"
   },
-  "homepage": "https://github.com/w00fz/trilby-grav-plugin-gitsync#readme",
+  "homepage": "https://github.com/w00fz/trilby-grav-plugin-gitsyncbis#readme",
   "dependencies": {
     "vex-js": "^3.0.0"
   },

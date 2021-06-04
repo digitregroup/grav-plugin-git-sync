@@ -1,5 +1,5 @@
 <?php
-namespace Grav\Plugin\GitSync;
+namespace Grav\Plugin\GitSyncBis;
 
 use Grav\Common\Grav;
 use Grav\Common\Plugin;
@@ -7,7 +7,7 @@ use Grav\Common\Utils;
 use RocketTheme\Toolbox\File\File;
 use SebastianBergmann\Git\Git;
 
-class GitSync extends Git
+class GitSyncBis extends Git
 {
     private $user;
     private $password;
@@ -21,7 +21,7 @@ class GitSync extends Git
         parent::__construct(USER_DIR);
         static::$instance = $this;
         $this->grav = Grav::instance();
-        $this->config = $this->grav['config']->get('plugins.git-sync');
+        $this->config = $this->grav['config']->get('plugins.git-sync-bis');
         $this->repositoryPath = USER_DIR;
 
         $this->user = isset($this->config['user']) ? $this->config['user'] : null;
@@ -183,7 +183,7 @@ class GitSync extends Git
         return $this->execute($add . ' ' . implode(' ', $paths));
     }
 
-    public function commit($message = '(Grav GitSync) Automatic Commit')
+    public function commit($message = '(Grav GitSyncBis) Automatic Commit')
     {
         $authorType = $this->getGitConfig('author', 'gituser');
         if (defined('GRAV_CLI') && in_array($authorType, ['gravuser', 'gravfull'])) {
@@ -191,7 +191,7 @@ class GitSync extends Git
         }
 
         switch ($authorType) {
-            case 'gitsync':
+            case 'gitsyncbis':
                 $user = $this->getConfig('git', null)['name'];
                 break;
             case 'gravuser':
@@ -294,12 +294,12 @@ class GitSync extends Git
 
             if ($this->getConfig('logging', false)) {
                 $log_command = Helper::preventReadablePassword($command, $this->password);
-                $this->grav['log']->notice('gitsync[command]: ' . $log_command);
+                $this->grav['log']->notice('gitsyncbis[command]: ' . $log_command);
 
                 exec($command, $output, $returnValue);
 
                 $log_output = Helper::preventReadablePassword(implode("\n", $output), $this->password);
-                $this->grav['log']->notice('gitsync[output]: ' . $log_output);
+                $this->grav['log']->notice('gitsyncbis[output]: ' . $log_output);
             } else {
                 exec($command, $output, $returnValue);
             }
@@ -315,7 +315,7 @@ class GitSync extends Git
 
             // handle scary messages
             if (Utils::contains($message, "remote: error: cannot lock ref")) {
-                $message = 'GitSync: An error occurred while trying to synchronize. This could mean GitSync is already running. Please try again.';
+                $message = 'GitSyncBis: An error occurred while trying to synchronize. This could mean GitSyncBis is already running. Please try again.';
             }
 
             throw new \RuntimeException($message);
