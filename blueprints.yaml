@@ -1,4 +1,4 @@
-name: Git Sync
+name: Git Sync Bis
 version: 1.0.4
 description: Allows to synchronize portions of Grav with Git Repositories (GitHub, BitBucket, GitLab)
 icon: git
